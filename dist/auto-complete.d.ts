@@ -13,5 +13,5 @@ export declare class AutoComplete {
     /**
      * return remote data from the given source and options, and data path
      */
-    getRemoteData(options: any): Observable<Response>;
+    getRemoteData(keyword: string): Observable<Response>;
 }

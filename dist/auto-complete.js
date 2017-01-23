@@ -21,39 +21,27 @@ var AutoComplete = (function () {
     }
     AutoComplete.prototype.filter = function (list, keyword) {
         return list.filter(function (el) {
-            return !!JSON.stringify(el).match(new RegExp(keyword, 'i'));
+            return !!JSON.stringify(el).match(new RegExp(keyword, "i"));
         });
     };
     /**
      * return remote data from the given source and options, and data path
      */
-    AutoComplete.prototype.getRemoteData = function (options) {
+    AutoComplete.prototype.getRemoteData = function (keyword) {
         var _this = this;
-        var keyValues = [];
-        var url = "";
-        for (var key in options) {
-            var regexp = new RegExp(':' + key, 'g');
-            url = this.source;
-            if (url.match(regexp)) {
-                url = url.replace(regexp, options[key]);
-            }
-            else {
-                keyValues.push(key + "=" + options[key]);
-            }
+        if (typeof this.source !== 'string') {
+            throw "Invalid type of source, must be a string. e.g. http://www.google.com?q=:my_keyword";
         }
-        if (keyValues.length) {
-            var qs = keyValues.join("&");
-            url += url.match(/\?[a-z]/i) ? qs : ('?' + qs);
-        }
+        var matches = this.source.match(/:[a-zA-Z_]+/);
+        var replacementWord = matches[0];
+        var url = this.source.replace(replacementWord, keyword);
         return this.http.get(url)
             .map(function (resp) { return resp.json(); })
             .map(function (resp) {
             var list = resp.data || resp;
             if (_this.pathToData) {
-                var paths = _this.pathToData.split('.');
-                paths.forEach(function (el) {
-                    list = list[el];
-                });
+                var paths = _this.pathToData.split(".");
+                paths.forEach(function (prop) { return list = list[prop]; });
             }
             return list;
         });

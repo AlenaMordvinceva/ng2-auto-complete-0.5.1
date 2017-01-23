@@ -16,48 +16,38 @@ export class AutoComplete {
     // ...
   }
 
-  filter(list: any[], keyword: string) {
+  public filter(list: any[], keyword: string) {
     return list.filter(
-      el => {
-        return !!JSON.stringify(el).match(new RegExp(keyword, 'i'));
-      }
+        el => {
+          return !!JSON.stringify(el).match(new RegExp(keyword, "i"));
+        }
     );
   }
 
   /**
    * return remote data from the given source and options, and data path
    */
-  getRemoteData(options: any): Observable<Response> {
-  
-    let keyValues: any[] = [];
-    let url = "";
-    for (var key in options) { // replace all keyword to value
-      let regexp: RegExp = new RegExp(':'+key, 'g');
-      url = this.source;
-      if (url.match(regexp)) {
-        url = url.replace(regexp, options[key]);
-      } else {
-        keyValues.push(key + "=" + options[key]);
-      }
+  public getRemoteData(keyword: string): Observable<Response> {
+    if (typeof this.source !== 'string') {
+      throw "Invalid type of source, must be a string. e.g. http://www.google.com?q=:my_keyword";
     }
-    
-    if (keyValues.length) {
-      var qs = keyValues.join("&");
-      url += url.match(/\?[a-z]/i) ? qs : ('?' + qs);
-    }
-    
+
+    let matches = this.source.match(/:[a-zA-Z_]+/);
+    let replacementWord = matches[0];
+    let url = this.source.replace(replacementWord, keyword);
+
     return this.http.get(url)
-      .map( resp => resp.json())
-      .map( resp => {
-        var list = resp.data  || resp;
-        if (this.pathToData) {
-          var paths = this.pathToData.split('.');
-          paths.forEach(function(el) {
-            list = list[el];
-          });
-        }
-        return list;
-      });
+        .map(resp => resp.json())
+        .map(resp => {
+          let list = resp.data || resp;
+
+          if (this.pathToData) {
+            let paths = this.pathToData.split(".");
+            paths.forEach(prop => list = list[prop]);
+          }
+
+          return list;
+        });
   };
 }
 

@@ -1,46 +1,44 @@
 import { ElementRef, OnInit, EventEmitter } from '@angular/core';
-import { Subject } from "rxjs/Subject";
 import { AutoComplete } from './auto-complete';
-/**
- * show a selected date in monthly calendar
- * Each filteredList item has the following property in addition to data itself
- *   1. displayValue as string e.g. Allen Kim
- *   2. dataValue as any e.g. 1234
- */
 export declare class AutoCompleteComponent implements OnInit {
+    elementRef: ElementRef;
     autoComplete: AutoComplete;
     /**
      * public variables
      */
-    listFormatter: (arg: any) => void;
+    listFormatter: (arg: any) => string;
     source: any;
     pathToData: string;
     minChars: number;
     valuePropertyName: string;
     displayPropertyName: string;
     placeholder: string;
+    blankOptionText: string;
+    noMatchFoundText: string;
     acceptUserInput: boolean;
+    loadingText: string;
+    maxNumList: number;
     inputChanged: EventEmitter<{}>;
+    valueSelected: EventEmitter<{}>;
+    autoCompleteInput: ElementRef;
     el: HTMLElement;
     inputEl: HTMLInputElement;
+    userInputEl: any;
+    userInputElTabIndex: any;
+    closeToBottom: boolean;
     dropdownVisible: boolean;
     isLoading: boolean;
     filteredList: any[];
     itemIndex: number;
     keyword: string;
-    valueSelected: Subject<any>;
-    /**
-     * constructor
-     */
+    minCharsEntered: boolean;
+    isSrcArr(): boolean;
     constructor(elementRef: ElementRef, autoComplete: AutoComplete);
-    /**
-     * user enters into input el, shows list to select, then select one
-     */
     ngOnInit(): void;
     reloadListInDelay(): void;
     showDropdownList(): void;
     hideDropdownList(): void;
-    reloadList(): void;
+    reloadList(keyword: string): void;
     selectOne(data: any): void;
     inputElKeyHandler(evt: any): void;
     getFormattedList(data: any): string;
