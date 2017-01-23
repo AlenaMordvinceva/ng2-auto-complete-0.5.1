@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewEncapsulation, Output, EventEmitter} from '@angular/core';
 import {Subject} from "rxjs/Subject";
 import {AutoComplete} from './auto-complete';
 
@@ -100,6 +100,9 @@ export class AutoCompleteComponent implements OnInit {
   @Input('value-property-name') valuePropertyName: string = 'id';
   @Input('display-property-name') displayPropertyName: string = 'value';
   @Input('placeholder') placeholder: string;
+  @Input('accept-user-input') acceptUserInput: boolean;
+
+  @Output() inputChanged = new EventEmitter();
 
   public el: HTMLElement;
   public inputEl: HTMLInputElement;
@@ -129,11 +132,13 @@ export class AutoCompleteComponent implements OnInit {
     this.autoComplete.source = this.source;
     this.autoComplete.pathToData = this.pathToData;
   }
-  
+
   reloadListInDelay(): void {
     let delayMs = this.source.constructor.name == 'Array' ? 10 : 500;
+    let keyword = this.inputEl.value;
     //executing after user stopped typing
     this.delay(() => this.reloadList(), delayMs);
+    this.inputChanged.emit(keyword);
   }
 
   showDropdownList(): void {
@@ -141,7 +146,7 @@ export class AutoCompleteComponent implements OnInit {
     this.inputEl.focus();
     this.reloadList();
   }
-  
+
   hideDropdownList(): void {
     this.dropdownVisible = false;
   }
@@ -207,12 +212,12 @@ export class AutoCompleteComponent implements OnInit {
         break;
     }
   };
-  
+
   getFormattedList(data: any): string {
     let formatter = this.listFormatter || this.defaultListFormatter;
     return formatter.apply(this, [data]);
   }
-  
+
   private defaultListFormatter(data: any): string {
     let html: string = "";
     html += data[this.valuePropertyName] ? `<b>(${data[this.valuePropertyName]})</b>`: "";

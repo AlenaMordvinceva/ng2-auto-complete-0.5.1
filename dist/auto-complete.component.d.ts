@@ -1,4 +1,4 @@
-import { ElementRef, OnInit } from '@angular/core';
+import { ElementRef, OnInit, EventEmitter } from '@angular/core';
 import { Subject } from "rxjs/Subject";
 import { AutoComplete } from './auto-complete';
 /**
@@ -19,6 +19,8 @@ export declare class AutoCompleteComponent implements OnInit {
     valuePropertyName: string;
     displayPropertyName: string;
     placeholder: string;
+    acceptUserInput: boolean;
+    inputChanged: EventEmitter<{}>;
     el: HTMLElement;
     inputEl: HTMLInputElement;
     dropdownVisible: boolean;

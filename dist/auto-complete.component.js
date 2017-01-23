@@ -27,6 +27,7 @@ var AutoCompleteComponent = (function () {
         this.minChars = 0;
         this.valuePropertyName = 'id';
         this.displayPropertyName = 'value';
+        this.inputChanged = new core_1.EventEmitter();
         this.dropdownVisible = false;
         this.isLoading = false;
         this.filteredList = [];
@@ -52,8 +53,10 @@ var AutoCompleteComponent = (function () {
     AutoCompleteComponent.prototype.reloadListInDelay = function () {
         var _this = this;
         var delayMs = this.source.constructor.name == 'Array' ? 10 : 500;
+        var keyword = this.inputEl.value;
         //executing after user stopped typing
         this.delay(function () { return _this.reloadList(); }, delayMs);
+        this.inputChanged.emit(keyword);
     };
     AutoCompleteComponent.prototype.showDropdownList = function () {
         this.keyword = '';
@@ -105,7 +108,7 @@ var AutoCompleteComponent = (function () {
                 this.itemIndex = (totalNumItem + this.itemIndex + 1) % totalNumItem;
                 break;
             case 13:
-                if(this.filteredList.length > 0) {
+                if (this.filteredList.length > 0) {
                     this.selectOne(this.filteredList[this.itemIndex]);
                 }
                 evt.preventDefault();
@@ -151,6 +154,14 @@ var AutoCompleteComponent = (function () {
         core_1.Input('placeholder'), 
         __metadata('design:type', String)
     ], AutoCompleteComponent.prototype, "placeholder", void 0);
+    __decorate([
+        core_1.Input('accept-user-input'), 
+        __metadata('design:type', Boolean)
+    ], AutoCompleteComponent.prototype, "acceptUserInput", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], AutoCompleteComponent.prototype, "inputChanged", void 0);
     AutoCompleteComponent = __decorate([
         // just to pass type check
         core_1.Component({
