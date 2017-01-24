@@ -1,5 +1,5 @@
 {
-  "name": "ng2-auto-complete",
+  "name": "ng2-auto-complete-0.5.1",
   "version": "0.5.1",
   "description": "Angular2 Input Autocomplete",
   "license": "MIT",
@@ -36,13 +36,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ng2-ui/ng2-auto-complete.git"
+    "url": "git+https://github.com/AlenaMordvinceva/ng2-auto-complete-0.5.1.git"
   },
-  "author": "",
-  "bugs": {
-    "url": "https://github.com/ng2-ui/ng2-auto-complete/issues"
-  },
-  "homepage": "https://github.com/ng2-ui/ng2-auto-complete#readme",
   "directories": {
     "test": "test"
   },
