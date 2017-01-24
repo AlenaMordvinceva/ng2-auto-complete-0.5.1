@@ -192,7 +192,7 @@ export class AutoCompleteComponent implements OnInit {
       if (typeof this.source === "function") {
         // custom function that returns observable
         this.source(keyword).subscribe(
-            resp => {
+            (resp: any) => {
 
               if (this.pathToData) {
                 let paths = this.pathToData.split(".");
@@ -204,8 +204,9 @@ export class AutoCompleteComponent implements OnInit {
                 this.filteredList = this.filteredList.slice(0, this.maxNumList);
               }
             },
-            error => null,
-            () => this.isLoading = false // complete
+            (error: any[]) => {
+              null, (any: any) => this.isLoading = false
+            }
         );
       } else {
         // remote source

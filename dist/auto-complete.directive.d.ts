@@ -36,7 +36,9 @@ export declare class AutoCompleteDirective implements OnInit {
     constructor(dcl: DynamicComponentLoader, resolver: ComponentResolver, viewContainerRef: ViewContainerRef, renderer: Renderer, parentForm: ControlContainer);
     ngOnInit(): void;
     ngOnDestroy(): void;
-    ngOnChanges(changes: SimpleChange): void;
+    ngOnChanges(changes: {
+        [propName: string]: SimpleChange;
+    }): void;
     showAutoCompleteDropdown(): void;
     hideAutoCompleteDropdown: (event?: any) => void;
     styleAutoCompleteDropdown: () => void;

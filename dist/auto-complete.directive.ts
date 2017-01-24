@@ -94,7 +94,7 @@ export class AutoCompleteDirective implements OnInit {
     document.removeEventListener("click", this.hideAutoCompleteDropdown);
   }
 
-  public ngOnChanges(changes: SimpleChange): void {
+  public ngOnChanges(changes: {[propName: string]: SimpleChange}): void {
     if (changes['ngModel']) {
       this.ngModel = this.addToStringFunction(changes['ngModel'].currentValue);
     }

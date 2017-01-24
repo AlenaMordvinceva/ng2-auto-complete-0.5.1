@@ -96,9 +96,9 @@ var AutoCompleteComponent = (function () {
                     if (_this.maxNumList) {
                         _this.filteredList = _this.filteredList.slice(0, _this.maxNumList);
                     }
-                }, function (error) { return null; }, function () { return _this.isLoading = false; } // complete
-                 // complete
-                );
+                }, function (error) {
+                    null, function (any) { return _this.isLoading = false; };
+                });
             }
             else {
                 // remote source
