@@ -55,7 +55,7 @@ var AutoCompleteDirective = (function () {
                 var thisInputElBCR = _this.inputEl.getBoundingClientRect();
                 _this.renderer.setElementStyle(component.autoCompleteInput.nativeElement, 'width', thisInputElBCR.width + "px");
                 _this.renderer.setElementStyle(component.autoCompleteInput.nativeElement, 'height', thisInputElBCR.height + "px");
-                _this.renderer.invokeElementMethod(component.autoCompleteInput.nativeElement, 'focus');
+                _this.renderer.invokeElementMethod(component.autoCompleteInput.nativeElement, 'focus', []);
                 component.closeToBottom = (thisInputElBCR.bottom + 100 > window.innerHeight);
             }
         };
@@ -86,21 +86,12 @@ var AutoCompleteDirective = (function () {
         this.el = this.viewContainerRef.element.nativeElement;
     }
     AutoCompleteDirective.prototype.ngOnInit = function () {
-        // ...
         var divEl = document.createElement("div");
         divEl.className = 'ng2-auto-complete';
         divEl.style.position = 'relative';
         this.el.parentElement.insertBefore(divEl, this.el.nextSibling);
         divEl.appendChild(this.el);
         this.selectNewValue(this.ngModel);
-        if (this.parentForm && this.formControlName) {
-            if (this.parentForm['form']) {
-                this.formControl = this.parentForm['form'].find(this.formControlName);
-            }
-        }
-        else if (this.extFormControl) {
-            this.formControl = this.extFormControl;
-        }
         document.addEventListener("click", this.hideAutoCompleteDropdown);
     };
     AutoCompleteDirective.prototype.ngOnDestroy = function () {
@@ -115,7 +106,6 @@ var AutoCompleteDirective = (function () {
             this.ngModel = this.addToStringFunction(changes['ngModel'].currentValue);
         }
     };
-    //show auto-complete list below the current element
     AutoCompleteDirective.prototype.showAutoCompleteDropdown = function () {
         var _this = this;
         this.hideAutoCompleteDropdown();
@@ -137,7 +127,6 @@ var AutoCompleteDirective = (function () {
             component.valueSelected.subscribe(_this.selectNewValue);
             component.inputChanged.subscribe(_this.componentInputChanged);
             _this.acDropdownEl = _this.componentRef.location.nativeElement;
-            //this.acDropdownEl.style.display = "none";
         });
         this.moveAutocompleteDropDownAfterInputEl();
         setTimeout(this.styleAutoCompleteDropdown);

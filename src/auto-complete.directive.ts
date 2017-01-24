@@ -17,7 +17,7 @@ import {
 } from '@angular/core';
 import {AutoCompleteComponent} from "./auto-complete.component";
 import "rxjs/Rx"
-import { ControlContainer, AbstractControl, FormGroup, FormControl } from "@angular/forms";
+import { ControlContainer, AbstractControl, FormControl } from "@angular/forms";
 
 /**
  * display auto-complete section with input and dropdown list when it is clicked
@@ -66,23 +66,12 @@ export class AutoCompleteDirective implements OnInit {
   }
 
   public ngOnInit(): void {
-    // ...
     let divEl = document.createElement("div");
     divEl.className = 'ng2-auto-complete';
     divEl.style.position = 'relative';
     this.el.parentElement.insertBefore(divEl, this.el.nextSibling);
     divEl.appendChild(this.el);
-
     this.selectNewValue(this.ngModel);
-
-    if (this.parentForm && this.formControlName) {
-      if (this.parentForm['form']) {
-        this.formControl = (<FormGroup>this.parentForm['form']).find(this.formControlName);
-      }
-    } else if (this.extFormControl) {
-      this.formControl = this.extFormControl;
-    }
-
     document.addEventListener("click", this.hideAutoCompleteDropdown);
   }
 
@@ -100,7 +89,6 @@ export class AutoCompleteDirective implements OnInit {
     }
   }
 
-  //show auto-complete list below the current element
   public showAutoCompleteDropdown() {
 
     this.hideAutoCompleteDropdown();
@@ -127,7 +115,6 @@ export class AutoCompleteDirective implements OnInit {
       component.inputChanged.subscribe(this.componentInputChanged);
 
       this.acDropdownEl = this.componentRef.location.nativeElement;
-      //this.acDropdownEl.style.display = "none";
     });
 
     this.moveAutocompleteDropDownAfterInputEl();
@@ -165,7 +152,7 @@ export class AutoCompleteDirective implements OnInit {
 
       this.renderer.setElementStyle(component.autoCompleteInput.nativeElement, 'width', `${thisInputElBCR.width}px`);
       this.renderer.setElementStyle(component.autoCompleteInput.nativeElement, 'height', `${thisInputElBCR.height}px`);
-      this.renderer.invokeElementMethod(component.autoCompleteInput.nativeElement, 'focus');
+      this.renderer.invokeElementMethod(component.autoCompleteInput.nativeElement, 'focus', []);
       component.closeToBottom = (thisInputElBCR.bottom + 100 > window.innerHeight);
     }
   };
